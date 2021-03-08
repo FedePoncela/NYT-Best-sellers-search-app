@@ -33,9 +33,10 @@
 <script>
 export default {
   name: "BookList",
-  props: { books: Array },
+  props: { books: Array },//End of props
   methods: {
     redirect: (bookTitle, bookAuthor) => {
+      ////formatting params to be suitable with google search
       let title = bookTitle.trim().toLowerCase().replaceAll(" ", "+");
       let author = bookAuthor.trim().toLowerCase().replaceAll(" ", "+");
 
@@ -43,8 +44,8 @@ export default {
         `https://www.google.com/search?q=${title}+${author}`,
         "_blank"
       );
-    },
-  },
+    },//End of redirect
+  },//End of methods
 };
 </script>
 

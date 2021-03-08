@@ -25,23 +25,27 @@ import axios from "axios";
 
 export default {
   name: "SearchBooks",
-  components: { BookList },
-  props: { value: String },
+  components: { BookList },//End of components
+  props: { value: String },//End of props
 
   data() {
     return {
       books: [],
     };
-  },
+  },//End of data
   methods: {
     categoryPicked(e) {
+      //formatting value to be suitable with api request
       let apiValue = this.value.trim().replaceAll(" ", "-");
       axios
         .get(
           `https://api.nytimes.com/svc/books/v3/lists/${apiValue}.json?api-key=OQSWLHa6QwTxVj0qQJWkLUV7NtKarcfV`
         )
         .then((response) => {
+          //empty books to allow multiple searches
           this.books = [];
+
+          //Loop to concat each book
           for (let i = 0; i < response.data.results.books.length; i++) {
             if (
               response.data.results.books[i].title
@@ -50,15 +54,15 @@ export default {
             ) {
               this.books = [...this.books, response.data.results.books[i]];
             }
-          }
+          }//End of for
           e.target.value = "";
           document
             .querySelector(".wrapper")
             .setAttribute("style", "margin-top: 0px");
         })
         .catch((e) => console.log(e));
-    },
-  },
+    }//End of categoryPicked
+  }//End of methods
 };
 </script>
 

@@ -5,6 +5,7 @@
     >
       <h2 class="text-center title">Choose your favourite</h2>
       <div id="row" class="row h-75 categoryWrapper">
+        <!-- For every category passed by props, create a div element... -->
         <div
           v-for="(cat, index) in category"
           :key="index"
@@ -23,26 +24,27 @@ export default {
   name: "PickACategory",
   props: {
     category: Array,
-  },
+  }, //End of props
+
   methods: {
     changeBackg: (e) => {
+      // Add a css class on click
       if (e.target.classList.contains("selectedCategory")) {
         e.target.classList.remove("selectedCategory");
       } else {
         let categories = document.querySelectorAll(".categories");
         for (let i = 0; i < categories.length; i++) {
           categories[i].classList.remove("selectedCategory");
-        }
+        } //End of for
         e.target.classList.add("selectedCategory");
-      }
-    },
-  },
-};
+      } //End of if
+    }, //End of changeBackg
+  }, //End of methods
+}; //End of export
 </script>
 
 
 <style scoped lang="scss">
-
 $main-black: #464646;
 $quickSand-font: "QuickSand", sans-serif;
 $poppins-font: "Poppins", sans-serif;
