@@ -1,28 +1,86 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div
+    id="app"
+    v-if="!picked"
+    class="d-flex flex-column justify-content-center"
+  >
+    <PickACategory :category="category" />
+    <button
+      class="w-50 mx-auto cst-btn"
+      v-on:click="
+        saveCategory();
+        picked = true;
+      "
+    >
+      Send
+    </button>
+  </div>
+
+  <div id="app" class="d-flex flex-column justify-content-center" v-else>
+    <SearchBooks :value="value" />
+    <button class="w-75 mx-auto cst-btn" v-on:click="picked = false">Back</button>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import SearchBooks from "./components/SearchBooks";
+import PickACategory from "./components/PickACategory";
+
+import axios from "axios";
+import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import "./app.css";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    SearchBooks,
+    PickACategory,
+  },
+  data() {
+    return {
+      category: [],
+      picked: false,
+      value: "",
+    };
+  },
+  mounted() {
+    this.getTodos();
+  },
+  methods: {
+    getTodos() {
+      axios
+        .get(
+          "https://api.nytimes.com/svc/books/v3/lists/names.json?api-key=OQSWLHa6QwTxVj0qQJWkLUV7NtKarcfV"
+        )
+        .then((response) => {
+          this.category = response.data.results.filter(
+            (el, index) => index < 10
+          );
+        })
+        .catch((e) => console.log(e));
+    },
+    saveCategory() {
+      this.value = document.querySelector(".selectedCategory").innerHTML;
+    },
+  },
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style scoped lang="scss">
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Quicksand:wght@400;500;700&display=swap');
+
+
+.cst-btn{
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  background: #ff6c5f;
+  color: white;
+  border-radius: 4px;
+  transition: all .3s ease-in;
+}
+.cst-btn:hover{
+  background: #464646; 
 }
 </style>
